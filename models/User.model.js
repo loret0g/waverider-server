@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
+// const { Schema, model } = require("mongoose")
+const mongoose = require("mongoose")
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -25,14 +26,14 @@ const userSchema = new Schema(
     phoneNumber: { 
       type: Number,
       default: null
-    }      
-  },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
-  }
+    },
+    jetSkis: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "JetSki"
+    }]
+  }, { timestamps: true }
 );
 
-const User = model("User", userSchema);
+const User = mongoose.model("User", userSchema)
 
-module.exports = User;
+module.exports = User

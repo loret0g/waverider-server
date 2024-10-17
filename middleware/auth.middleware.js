@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken")
+const JetSki = require("../models/JetSki.model")
 
 function verifyToken(req, res, next) {
 
@@ -21,16 +22,44 @@ function verifyToken(req, res, next) {
   }
 }
 
-//! Rol para propietario
-function verifyOwner(req, res, next) {
-  if (req.payload.role === "owner") {
-    next()
+function verifyUserIdentity(req, res, next) {
+  if (req.payload._id !== req.params.userId) {
+    return res.status(403).json({ message: "No tienes permiso para modificar este perfil" });
   } else {
-    res.status(401).json({message: "No eres un propietario"})
+    next()
+  }
+}
+
+function verifyOwner(req, res, next) {
+  if (req.payload.role !== "owner") {
+    return res.status(403).json({ message: "No tienes permiso para realizar esta acción" });
+  } else {
+    next();
+  }
+}
+
+// Que coincida el id de la moto con su propietario
+async function verifyJetSkiOwner(req, res, next) {
+  try {
+    const jetSki = await JetSki.findById(req.params.jetSkiId);
+
+    if (!jetSki) {
+      return res.status(404).json({ message: "Moto de agua no encontrada" });
+    }
+
+    if (jetSki.owner.toString() !== req.payload._id) {
+      return res.status(403).json({ message: "No tienes permiso para modificar esta moto" });
+    }
+
+    next();
+  } catch (error) {
+    next(error);
   }
 }
 
 module.exports = {
   verifyToken,
-  verifyOwner
+  verifyUserIdentity,
+  verifyOwner,
+  verifyJetSkiOwner
 }
