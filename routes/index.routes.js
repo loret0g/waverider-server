@@ -17,4 +17,7 @@ router.use("/owner/jet-ski", ownerRouter)
 const jetSkiRouter = require("./jetSki.routes")
 router.use("/jet-ski", jetSkiRouter)
 
+const reservationRouter = require("./reservation.routes")
+router.use("/reservation", reservationRouter)
+
 module.exports = router;
