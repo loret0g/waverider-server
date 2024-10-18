@@ -24,7 +24,7 @@ function verifyToken(req, res, next) {
 
 function verifyUserIdentity(req, res, next) {
   if (req.payload._id !== req.params.userId) {
-    return res.status(403).json({ message: "No tienes permiso para modificar este perfil" });
+    return res.status(403).json({ message: "No tienes permiso de acceso" });
   } else {
     next()
   }
