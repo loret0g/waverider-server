@@ -8,19 +8,35 @@ const { verifyToken, verifyUserIdentity } = require("../middleware/auth.middlewa
 
 // POST /api/reservation/:jetSkiId
 router.post("/:jetSkiId", verifyToken, async(req, res, next) => {
-  console.log(req.body)
-
   const { jetSkiId } = req.params
   const { reservationDate } = req.body
 
   try {
+    // Convierto la fecha recibida y elimino la hora
+    const selectedDate = new Date(reservationDate)
+    selectedDate.setUTCHours(0, 0, 0, 0)
+
+    // Comprobación si la moto ya está reservada en la fecha elegida
+    const existingReservation = await Reservation.findOne({
+      jetSki: jetSkiId,
+      reservationDate: {
+        $gte: selectedDate,
+        $lt: new Date(selectedDate).setDate(selectedDate.getDate() + 1)  // Comparamos el día entero
+      }
+    })
+
+    if (existingReservation) {
+      return res.status(400).json({ message: "La moto ya está reservada para esta fecha" });
+    }
+
+    // Si está disponible, se realiza reserva
     const jetSki = await JetSki.findById(jetSkiId)
 
     const response = await Reservation.create({
       user: req.payload._id,
       jetSki: jetSkiId,
       owner: jetSki.owner,
-      reservationDate,
+      reservationDate: selectedDate,
       price: jetSki.price
     })
     res.status(201).json(response)
