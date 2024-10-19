@@ -18,7 +18,7 @@ router.get("/", async(req, res, next) => {
 // GET api/jet-ski/:jetSkiId
 router.get("/:jetSkiId", async(req, res, next) => {
   try {
-    const response = await JetSki.findById(req.params.jetSkiId).populate("owner", "username")
+    const response = await JetSki.findById(req.params.jetSkiId).populate("owner")
     res.status(200).json(response)
   } catch (error) {
     console.log(error)

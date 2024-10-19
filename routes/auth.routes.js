@@ -8,7 +8,6 @@ const {verifyToken, verifyOwner} = require("../middleware/auth.middleware")
 
 // POST - "/api/auth/signup"
 router.post("/signup", async(req, res, next) => {
-  console.log(req.body)
 
   const { email, password, username, role, phoneNumber } = req.body
 
@@ -34,8 +33,7 @@ router.post("/signup", async(req, res, next) => {
     if(!regexPhone.test(phoneNumber)) {
       res.status(400).json({message: "El número de teléfono no tiene una estructura correcta"})
       return
-    } 
-
+    }
   }
 
   try {
@@ -48,10 +46,10 @@ router.post("/signup", async(req, res, next) => {
 
     // Que no haya otro usuario con el mismo teléfono
     if (phoneNumber) {
-      const foundUserByPhone = await User.findOne({ phoneNumber: phoneNumber });
+      const foundUserByPhone = await User.findOne({ phoneNumber: phoneNumber })
       if (foundUserByPhone) {
-        res.status(400).json({ message: "Número de teléfono ya registrado" });
-        return;
+        res.status(400).json({ message: "Número de teléfono ya registrado" })
+        return
       }
     }
 
@@ -71,7 +69,6 @@ router.post("/signup", async(req, res, next) => {
   } catch (error) {
     next(error)
   }
-
 })
 
 // POST "/api/auth/login"

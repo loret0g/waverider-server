@@ -20,9 +20,33 @@ router.get("/:userId", verifyToken, async(req, res, next) => {
 
 // PUT api/profile/:userId
 router.put("/:userId", verifyToken, verifyUserIdentity, async(req, res, next) => {
+
+  const { email, username, phoneNumber } = req.body
+
+  if(!username || !email) {
+    res.status(400).json({message: "El nombre y email son campos requeridos"})
+    return
+  }
+  
+  const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if(!regexEmail.test(email)) {
+    res.status(400).json({message: "El email no tiene una estructura correcta"})
+    return
+  }
+
+  if(phoneNumber) {
+    const regexPhone = /^[0-9]{9}$/;
+    if(!regexPhone.test(phoneNumber)) {
+      res.status(400).json({message: "El número de teléfono no tiene una estructura correcta"})
+      return
+    }
+  }
+
   try {
     const response = await User.findByIdAndUpdate(req.params.userId, {
-      username: req.body.username
+      username: req.body.username,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
     }, {new: true})
     console.log(req.body.username)
     res.status(202).json(response)

@@ -4,8 +4,22 @@ const User = require("../models/User.model")
 const JetSki = require("../models/JetSki.model")
 const { verifyToken, verifyOwner, verifyJetSkiOwner } = require("../middleware/auth.middleware")
 
+// Ruta para que los usuarios registrados puedan ver el perfil de un propietario en específico:
+// GET api/owner/:ownerId
+router.get("/:ownerId", verifyToken, async(req, res, next) => {
+  try {
+    const owner = await User.findById(req.params.ownerId).select('-password')
+    const jetSkis = await JetSki.find({ owner: req.params.ownerId })
+
+    res.status(200).json({ owner, jetSkis })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
 // GET api/owner/jet-ski/
-router.get("/", verifyToken, verifyOwner, async(req, res, next) => {
+router.get("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
   try {
     const response = await JetSki.find({owner: req.payload._id})
     res.status(200).json(response)
@@ -17,9 +31,20 @@ router.get("/", verifyToken, verifyOwner, async(req, res, next) => {
 })
 
 // POST api/owner/jet-ski/
-router.post("/", verifyToken, verifyOwner, async(req, res, next) => {
+router.post("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
 
   const { name, description, price, images } = req.body
+
+  // Validación de los campos requeridos
+  if (!name || !description || !price || !images || images.length === 0) {
+    return res.status(400).json({ message: "Todos los campos son obligatorios, incluida al menos una imagen." })
+  }
+
+  // Validación del precio
+  if (isNaN(price) || price <= 0) {
+    return res.status(400).json({ message: "El precio debe ser mayor a 0." })
+  }
+
   try {
     const response = await JetSki.create({
       name,
@@ -43,8 +68,18 @@ router.post("/", verifyToken, verifyOwner, async(req, res, next) => {
 })
 
 // PUT api/owner/jet-ski/:jetSkiId
-router.put("/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req, res, next) => {
+router.put("/jet-ski/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req, res, next) => {
   const { name, description, price, images } = req.body
+
+  // Validación de los campos requeridos
+  if (!name || !description || !price || !images || images.length === 0) {
+    return res.status(400).json({ message: "Todos los campos son obligatorios, incluida al menos una imagen." })
+  }
+
+  // Validación del precio
+  if (isNaN(price) || price <= 0) {
+    return res.status(400).json({ message: "El precio debe ser mayor a 0." })
+  }
 
   try {
 
@@ -63,7 +98,7 @@ router.put("/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req,
 })
 
 // DELETE api/owner/jet-ski/:jetSkiId
-router.delete("/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req, res, next) => {
+router.delete("/jet-ski/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req, res, next) => {
 
   try {
     await JetSki.findOneAndDelete(req.params.jetSkiId)
