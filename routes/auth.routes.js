@@ -9,7 +9,9 @@ const {verifyToken, verifyOwner} = require("../middleware/auth.middleware")
 // POST - "/api/auth/signup"
 router.post("/signup", async(req, res, next) => {
 
-  const { email, password, username, role, phoneNumber } = req.body
+  const { email, password, username, role, phoneNumber, photo } = req.body
+
+  console.log("Request body::", req.body);
 
   if(!email || !password || !username) {
     res.status(400).json({message: "Todos los campos son requeridos"})
@@ -62,7 +64,8 @@ router.post("/signup", async(req, res, next) => {
       password: hashPassword, 
       username,
       role,
-      phoneNumber
+      phoneNumber, 
+      photo
     })
     
     res.sendStatus(201)

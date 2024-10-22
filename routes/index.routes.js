@@ -20,4 +20,8 @@ router.use("/jet-ski", jetSkiRouter)
 const reservationRouter = require("./reservation.routes")
 router.use("/reservation", reservationRouter)
 
+// Cloudinary
+const uploadRoutes = require("./upload.routes")
+router.use("/upload", uploadRoutes)
+
 module.exports = router;

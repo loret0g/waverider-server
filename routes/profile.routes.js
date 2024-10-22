@@ -47,6 +47,7 @@ router.put("/:userId", verifyToken, verifyUserIdentity, async(req, res, next) =>
       username: req.body.username,
       email: req.body.email,
       phoneNumber: req.body.phoneNumber,
+      photo: req.body.photo
     }, {new: true})
     console.log(req.body.username)
     res.status(202).json(response)

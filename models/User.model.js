@@ -30,7 +30,11 @@ const userSchema = new mongoose.Schema(
     jetSkis: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "JetSki"
-    }]
+    }],
+    photo: {
+      type: String,
+      default: "https://cuv.upc.edu/ca/shared/imatges/fotos-professorat-i-professionals/anonimo.jpg"
+    }
   }, { timestamps: true }
 );
 
