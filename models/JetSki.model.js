@@ -29,6 +29,18 @@ const jetSkiSchema = new mongoose.Schema({
   averageRating: { 
     type: Number, 
     default: 0 
+  },
+  year: {
+    type: Number,
+    required: true
+  },
+  deposit: {
+    type: Number,
+    required: true
+  },
+  horsepower: {
+    type: Number,
+    required: true
   }
 }, { timestamps: true });
 

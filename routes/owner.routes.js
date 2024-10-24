@@ -30,10 +30,10 @@ router.get("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
 // POST api/owner/jet-ski/
 router.post("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
 
-  const { name, description, price, images } = req.body
+  const { name, description, price, images, year, deposit, horsepower } = req.body
 
   // Validación de los campos requeridos
-  if (!name || !description || !price || !images || images.length === 0) {
+  if (!name || !description || !price || !images || images.length === 0 || !year || !deposit || !horsepower) {
     return res.status(400).json({ message: "Todos los campos son obligatorios, incluida al menos una imagen." })
   }
 
@@ -49,6 +49,9 @@ router.post("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
       price,
       images,
       owner: req.payload._id,
+      year,
+      deposit,
+      horsepower
     })
 
     // Lo añado al array de motos del usuario
@@ -65,10 +68,10 @@ router.post("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
 
 // PUT api/owner/jet-ski/:jetSkiId
 router.put("/jet-ski/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, async(req, res, next) => {
-  const { name, description, price, images } = req.body
+  const { name, description, price, images, year, deposit, horsepower } = req.body
 
   // Validación de los campos requeridos
-  if (!name || !description || !price || !images || images.length === 0) {
+  if (!name || !description || !price || !images || images.length === 0 || !year || !deposit || !horsepower) {
     return res.status(400).json({ message: "Todos los campos son obligatorios, incluida al menos una imagen." })
   }
 
@@ -78,12 +81,14 @@ router.put("/jet-ski/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, as
   }
 
   try {
-
     const response = await JetSki.findByIdAndUpdate( req.params.jetSkiId, { 
       name, 
       description, 
       price, 
-      images
+      images,
+      year,
+      deposit,
+      horsepower
     }, { new: true })
     res.status(202).json(response)
     
