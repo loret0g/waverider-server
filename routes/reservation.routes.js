@@ -41,7 +41,6 @@ router.post("/:jetSkiId", verifyToken, async(req, res, next) => {
     })
     res.status(201).json(response)
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
@@ -56,11 +55,11 @@ router.get("/:userId", verifyToken, verifyUserIdentity, async(req, res, next) =>
     const response = await Reservation.find({
       $or: [{user: userId}, {owner: userId}]
     }).populate("jetSki").populate("user").populate("owner")
+    .sort({ reservationDate: 1 })
     // res.status(200).json("0 reservas")
     res.status(200).json(response)
 
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })

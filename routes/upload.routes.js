@@ -4,8 +4,6 @@ const uploader = require("../middleware/cloudinary.config");
 
 // POST "/api/upload"
 router.post("/", uploader.single("image"), (req, res, next) => {
-  // console.log("file is: ", req.file);
-
   if (!req.file) {
     // this will happend if cloudinary rejects the image for any reason
     res.status(400).json({

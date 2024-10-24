@@ -12,7 +12,6 @@ router.get("/:userId", verifyToken, async(req, res, next) => {
   try {
     const response = await User.findById(req.params.userId)
     res.status(200).json(response)
-    console.log(response)
   } catch (error) {
     next(error)
   }
@@ -49,7 +48,6 @@ router.put("/:userId", verifyToken, verifyUserIdentity, async(req, res, next) =>
       phoneNumber: req.body.phoneNumber,
       photo: req.body.photo
     }, {new: true})
-    console.log(req.body.username)
     res.status(202).json(response)
   } catch (error) {
     next(error)

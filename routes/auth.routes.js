@@ -11,8 +11,6 @@ router.post("/signup", async(req, res, next) => {
 
   const { email, password, username, role, phoneNumber, photo } = req.body
 
-  console.log("Request body::", req.body);
-
   if(!email || !password || !username) {
     res.status(400).json({message: "Todos los campos son requeridos"})
     return
@@ -77,7 +75,6 @@ router.post("/signup", async(req, res, next) => {
 // POST "/api/auth/login"
 router.post("/login", async(req, res, next) => {
   const { email, password } = req.body
-  // console.log(email, password)
 
   if(!email || !password) {
     res.status(400).json({message: "Todos los campos son requeridos"})
@@ -120,8 +117,6 @@ router.post("/login", async(req, res, next) => {
 
 // GET "/api/auth/verify"
 router.get("/verify", verifyToken, (req, res) => {
-  console.log(req.payload)
-
   res.status(200).json(req.payload)
   // con esto el frontend sabe quien es el usuario que está navegando por la web
 })

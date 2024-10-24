@@ -24,4 +24,9 @@ router.use("/reservation", reservationRouter)
 const uploadRoutes = require("./upload.routes")
 router.use("/upload", uploadRoutes)
 
+const reviewRouter = require("./review.routes")
+router.use("/review", reviewRouter)
+
+
+
 module.exports = router;

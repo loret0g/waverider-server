@@ -33,7 +33,11 @@ const userSchema = new mongoose.Schema(
     }],
     photo: {
       type: String,
-      default: "https://cuv.upc.edu/ca/shared/imatges/fotos-professorat-i-professionals/anonimo.jpg"
+      default: "https://st5.depositphotos.com/17433220/73304/i/450/depositphotos_733041078-stock-photo-silhouette-adult-man-male-avatar.jpg"
+    },
+    averageRating: {
+      type: Number,
+      default: 0
     }
   }, { timestamps: true }
 );

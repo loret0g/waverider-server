@@ -2,9 +2,6 @@ const jwt = require("jsonwebtoken")
 const JetSki = require("../models/JetSki.model")
 
 function verifyToken(req, res, next) {
-
-  console.log(req.headers)
-
   try {
 
     const tokenArr = req.headers.authorization.split(" ")
@@ -12,7 +9,6 @@ function verifyToken(req, res, next) {
 
     const payload = jwt.verify(token, process.env.TOKEN_SECRET)
     
-    console.log(payload)
     req.payload = payload
 
     next()

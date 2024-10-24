@@ -25,7 +25,11 @@ const jetSkiSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-  }  
+  },
+  averageRating: { 
+    type: Number, 
+    default: 0 
+  }
 }, { timestamps: true });
 
 const JetSki = mongoose.model("JetSki", jetSkiSchema)

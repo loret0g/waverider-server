@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 const reservationSchema = new mongoose.Schema({
-
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -24,10 +23,12 @@ const reservationSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: true,
+  },
+  hasReviewed: {
+    type: Boolean,
+    default: false
   }
-
 }, { timestamps: true })
-
 
 
 const Reservation = mongoose.model("Reservation", reservationSchema)

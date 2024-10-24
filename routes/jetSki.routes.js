@@ -10,7 +10,6 @@ router.get("/", async(req, res, next) => {
     res.status(200).json(response)
 
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
@@ -21,7 +20,6 @@ router.get("/:jetSkiId", async(req, res, next) => {
     const response = await JetSki.findById(req.params.jetSkiId).populate("owner")
     res.status(200).json(response)
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })

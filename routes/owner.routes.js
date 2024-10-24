@@ -13,7 +13,6 @@ router.get("/:ownerId", verifyToken, async(req, res, next) => {
 
     res.status(200).json({ owner, jetSkis })
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
@@ -23,9 +22,7 @@ router.get("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
   try {
     const response = await JetSki.find({owner: req.payload._id})
     res.status(200).json(response)
-    // res.json("si tuvieras una moto, la verías")
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
@@ -62,7 +59,6 @@ router.post("/jet-ski", verifyToken, verifyOwner, async(req, res, next) => {
     res.status(201).json(response)
 
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
@@ -92,7 +88,6 @@ router.put("/jet-ski/:jetSkiId", verifyToken, verifyOwner, verifyJetSkiOwner, as
     res.status(202).json(response)
     
   } catch (error) {
-    console.log(error)
     next(error)
   }
 })
